@@ -1,0 +1,81 @@
+<script>
+    alert('Selamat datang di hoki-hoki bento');
+    class Menu {
+        constructor(nama, harga, qty){
+            this.nama = nama;
+            this.harga = harga;
+            this.qty = qty;
+        }
+    }
+    var listMenu = [{ nama: 'Paket Bento A', harga: 20000 },
+                    { nama: 'Paket Bento B', harga: 25000 },
+                    { nama: 'Paket Bento C', harga: 30000 }];
+    var harga = 0;
+    var listCart = [];
+
+    function lihatMenu() {
+        var strMenu = 'Menunya :';
+        for(var i = 1; i <= listMenu.length; i++) {
+            strMenu += '\n' + i + '. ' + listMenu[i-1].nama + ' Rp.' + listMenu[i-1].harga; 
+        }
+        strMenu += '\n\nMau yang mana?';
+        var menuPilihan = parseInt(prompt(strMenu));
+        var qty = parseInt(prompt('Berapa banyak ? : '));
+        var newItem = new Menu();
+        newItem.nama = listMenu[menuPilihan-1].nama;
+        newItem.harga = listMenu[menuPilihan-1].harga;
+        newItem.qty = qty;
+        listCart.push(newItem);
+        harga += listMenu[menuPilihan-1].harga * qty;
+    }
+
+    var lihatCart = function() {
+        var text = '';
+        for(var i = 0; i < listCart.length; i++)
+        {
+            text += '\n' + (i+1) + '. ' + listCart[i].nama + ' Rp.' + listCart[i].harga + ' ' + listCart[i].qty + ' qty';
+        }
+        alert('Isi Cart: ' + text);
+    }
+
+    const bayar = () => {
+        while(true) {
+            var text = '';
+            for(var i = 0; i < listCart.length; i++)
+            {
+                text += '\n' + (i+1) + '. ' + listCart[i].nama + ' Rp.' + listCart[i].harga + ' ' + listCart[i].qty + ' qty';
+            }
+            var uangBayar = parseInt(prompt('Paket yang ingin dibeli: \n' + text + '\n\nHarga yang harus dibayar : \n\nRp. ' + harga + '\n\nUang Anda?'));
+            var kembalian = uangBayar - harga;
+            if(kembalian < 0)
+            {
+                alert('Uang anda Kurang!!');
+            }
+            else
+            {
+                alert('Kembalian sebesar: Rp. ' + kembalian);
+                listCart = [];
+                harga = 0;
+                break;
+            }
+        }
+    }
+
+    var arrMainMenu = [lihatMenu, lihatCart, bayar]
+    
+
+    while(true)
+    {
+        var pilihan = parseInt(prompt("1. Lihat & Pesan Menu \n2. Lihat Cart \n3. Bayar \n4. Keluar \n\nInput Pilihan: "));
+
+        if(pilihan == 4)
+        {
+            alert('Sampai Jumpa dan terima kasih');
+            break;
+        }
+        else if(pilihan == 1 || pilihan == 2 || pilihan == 3) {
+            arrMainMenu[pilihan-1]();
+        }
+    }
+    
+</script>
