@@ -1,0 +1,182 @@
+<html>
+    <head>
+        <title>Latihan Form</title>
+        <style>
+            table, th, td {
+                padding: 25px;
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
+    </head>
+    <body>
+        <center>
+            <table>
+                <thead>
+                    <th>Form Manusia</th>
+                    <th>Form Binatang</th>
+                </thead>
+                <tbody>
+                    <td>
+                        <form id="frmManusia">
+                            Nama : <input id="inputNama" type="text" placeholder="masukkan nama"/>
+                            <br /><br />
+                            Umur : <input id="inputUmur" type="number" />
+                            <br /><br />
+                            Kelamin : <input id="radioKelaminPria" name="rbKelaminM" type="radio" value="Pria" checked="checked"/> Pria
+                            <input id="radioKelaminWanita" name="rbKelaminM" type="radio" value="Wanita" /> Wanita
+                            <br /><br />
+                            Pekerjaan : 
+                            <select id="ddlPekerjaan">
+                                <option value="Guru">Guru</option>
+                                <option value="Dokter">Dokter</option>
+                                <option value="Polisi">Polisi</option>
+                            </select>
+                            <br />
+                            <br />
+                            <input type="button" value="Add Manusia" onclick="addManusia()" />
+                        </form>
+                    </td>
+                    <td>
+                        <form id="frmBinatang">
+                            Nama : <input type="text" placeholder="masukkan nama"/>
+                            <br /><br />
+                            Umur : <input type="number" />
+                            <br /><br />
+                            Kelamin : <input type="radio"name="rbKelaminB" value="Jantan" checked="checked" /> Jantan
+                            <input type="radio" name="rbKelaminB" value="Betina" /> Betina
+                            <br /><br />
+                            Status : <input type="radio" name="rbStatusB" value="Liar" checked="checked" /> Liar
+                            <input type="radio" name="rbStatusB" value="Peliharaan" /> Peliharaan
+                            <br />
+                            <br />
+                            <input type="button" value="Add Binatang" onclick="addBinatang()" />
+                        </form>
+                    </td>
+                </tbody>
+            </table>
+            <table>
+                <thead>
+                    <th>Data Manusia</th>
+                    <th>Data Binatang</th>
+                </thead>
+                <tbody>
+                    <td>
+                        <table>
+                            <thead>
+                                <th>Nama</th>
+                                <th>Umur</th>
+                                <th>Kelamin</th>
+                                <th>Pekerjaan</th>
+                            </thead>
+                            <tbody id="bodyManusia">
+            
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            <thead>
+                                <th>Nama</th>
+                                <th>Umur</th>
+                                <th>Kelamin</th>
+                                <th>Status</th>
+                            </thead>
+                            <tbody id="bodyBinatang">
+            
+                            </tbody>
+                        </table>
+                    </td>
+                </tbody>
+            </table>
+        </center>
+
+        <script>
+            class MakhlukHidup {
+                constructor(nama,umur,kelamin) {
+                    this.Nama = nama;
+                    this.Umur = umur;
+                    this.Kelamin = kelamin;
+                }
+            }
+            class Manusia extends MakhlukHidup {
+                constructor(nama,umur,kelamin,pekerjaan) {
+                    super(nama,umur,kelamin);
+                    this.Pekerjaan = pekerjaan;
+                }
+            }
+            class Binatang extends MakhlukHidup {
+                constructor(nama,umur,kelamin,status) {
+                    super(nama,umur,kelamin);
+                    this.Status = status;
+                }
+            }
+
+            var arrManusia = [];
+            var arrBinatang = [];
+
+            var tampilkanData = function() {
+                var isiBodyManusia = '';
+                var isiBodyBinatang = '';
+
+                for(var i = 0; i < arrManusia.length; i++) {
+                    isiBodyManusia += `<tr>
+                                            <td>${arrManusia[i].Nama}</td>
+                                            <td>${arrManusia[i].Umur}</td>
+                                            <td>${arrManusia[i].Kelamin}</td>
+                                            <td>${arrManusia[i].Pekerjaan}</td>
+                                        </tr>`;                      
+                }
+                for(var i = 0; i < arrBinatang.length; i++) {
+                    isiBodyBinatang += `<tr>
+                                            <td>${arrBinatang[i].Nama}</td>
+                                            <td>${arrBinatang[i].Umur}</td>
+                                            <td>${arrBinatang[i].Kelamin}</td>
+                                            <td>${arrBinatang[i].Status}</td>
+                                        </tr>`;    
+                }
+                document.getElementById("bodyManusia").innerHTML = isiBodyManusia;
+                document.getElementById("bodyBinatang").innerHTML = isiBodyBinatang;
+            }
+
+            var addManusia = function() {
+                var nama = document.getElementById("inputNama").value;
+                var umur = document.getElementById("inputUmur").value;
+                var kelamin = "";
+                if(document.getElementById("radioKelaminPria").checked) {
+                    kelamin = document.getElementById("radioKelaminPria").value;
+                }
+                else {
+                    kelamin = document.getElementById("radioKelaminWanita").value;
+                }
+                var pekerjaan = document.getElementById("ddlPekerjaan").value;
+                var newManusia = new Manusia(nama,umur,kelamin,pekerjaan);
+                arrManusia.push(newManusia);
+                tampilkanData();
+            }
+
+            var addBinatang = function() {
+                var nama = document.getElementById("frmBinatang").elements[0].value;
+                var umur = document.getElementById("frmBinatang").elements[1].value;
+                var kelamin = "";
+                var status = "";
+                if(document.getElementById("frmBinatang").elements[2].checked) {
+                    kelamin = document.getElementById("frmBinatang").elements[2].value;
+                }
+                else {
+                    kelamin = document.getElementById("frmBinatang").elements[3].value;
+                }
+                if(document.getElementById("frmBinatang").elements[4].checked) {
+                    status = document.getElementById("frmBinatang").elements[4].value;
+                }
+                else {
+                    status = document.getElementById("frmBinatang").elements[5].value;
+                }
+                var newBinatang = new Binatang(nama,umur,kelamin,status);
+                arrBinatang.push(newBinatang);
+                tampilkanData();
+            }
+
+        </script>
+    </body>
+</html>
