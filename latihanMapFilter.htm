@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+                padding: 25px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Filter</h1>
+        <form>
+            Nama : <input type="text" id="filterNama" />
+            <br /><br />
+            Umur : <input type="number" id="filterUmurMin" /> - <input type="number" id="filterUmurMax" />
+            <br /><br />
+            Pekerjaan : 
+            <select id="filterPekerjaan">
+                
+            </select>
+            <br /><br />
+            <input type="button" value="search" onclick="filterTable()" />
+            <br />
+        </form>
+        <table>
+            <thead>
+                <th>Nama</th>
+                <th>Umur</th>
+                <th>Pekerjaan</th>
+                <th></th>
+            </thead>
+            <tbody id="bodyTable">
+                
+            </tbody>
+            <tfoot>
+                <td><input type="text" id="tbAddNama" /></td>
+                <td><input type="number" id="tbAddUmur" /></td>
+                <td><input type="text" id="tbAddPekerjaan" /></td>
+                <td><input type="button" value="Add" onclick="addManusia()"/></td>
+            </tfoot>
+        </table>
+        <script>
+            var arrManusia = [{ nama: 'Baron', umur: 21, pekerjaan: 'Guru' },
+                            { nama: 'Andi', umur: 22, pekerjaan: 'Coders' },
+                            { nama: 'Budi', umur: 25, pekerjaan: 'Polisi'},
+                            { nama: 'Ceci', umur: 28, pekerjaan: 'Marketing Director'},
+                            { nama: 'Didi', umur: 90, pekerjaan: 'MMA Fighter'}]
+
+            var arrPekerjaan = ['All', 'Guru', 'Coders', 'Polisi', 'Marketing Director', 'MMA Fighter'];
+
+            var tampilkan = (arr = arrManusia, pekerjaan = '') => {
+                var newArr = arr.map((manusia) => {
+                    return `<tr>
+                                <td>${manusia.nama}</td>
+                                <td>${manusia.umur}</td>
+                                <td>${manusia.pekerjaan}</td>
+                                <td></td>
+                            </tr>`;
+                })
+
+                var newArrPekerjaan = arrPekerjaan.map((work) => {
+                    var valueWork = work;
+                    if(work == 'All') {
+                        valueWork = '';
+                    }
+                    return `<option value="${valueWork}">${work}</option>`;
+                })
+            
+                document.getElementById('bodyTable').innerHTML = newArr.join('');
+                document.getElementById('filterPekerjaan').innerHTML = newArrPekerjaan.join('');
+                document.getElementById('filterPekerjaan').value = pekerjaan;
+            }
+            var addManusia = () => {
+                var nama = document.getElementById("tbAddNama").value;
+                var umur = parseInt(document.getElementById("tbAddUmur").value);
+                var pekerjaan = document.getElementById("tbAddPekerjaan").value;
+
+                var checkArr = arrPekerjaan.filter((work) => work == pekerjaan);
+
+                if(checkArr.length == 0) {
+                    arrPekerjaan.push(pekerjaan);
+                }
+
+                arrManusia.push({ nama, umur, pekerjaan });
+                tampilkan();
+            }
+
+            var filterTable = () => {
+                var nama = document.getElementById("filterNama").value;
+                var umurMin = parseInt(document.getElementById("filterUmurMin").value);
+                var umurMax = parseInt(document.getElementById("filterUmurMax").value);
+                var pekerjaan = document.getElementById("filterPekerjaan").value;
+
+                var arrFilter = arrManusia.filter((manusia) => {
+                    return (manusia.nama.includes(nama) 
+                            && manusia.umur >= umurMin
+                            && manusia.umur <= umurMax
+                            && manusia.pekerjaan.includes(pekerjaan));
+                });
+
+                tampilkan(arrFilter, pekerjaan);
+            }
+
+            tampilkan();
+            
+        </script>
+    </body>
+</html>
